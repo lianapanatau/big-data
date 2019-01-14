@@ -1,7 +1,5 @@
 package com.bigdata.topic.model;
 
-import java.util.List;
-
 public class Document {
     private String category;
     private String title;
