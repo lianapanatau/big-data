@@ -1,15 +1,14 @@
 package com.bigdata.topic.controller;
 
+import com.itextpdf.text.pdf.PdfReader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
 
 @RestController("topic-modeling")
 public class DocumentsController {
@@ -23,11 +22,10 @@ public class DocumentsController {
     public void fileReceiver(@RequestParam("file") MultipartFile file) {
         String result = "";
         try {
-            result = new BufferedReader(new InputStreamReader(file.getInputStream()))
-                    .lines().collect(Collectors.joining("\n"));
+            PdfReader pdfReader = new PdfReader(file.getInputStream());
+            System.out.println(pdfReader.getNumberOfPages());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(result);
     }
 }
