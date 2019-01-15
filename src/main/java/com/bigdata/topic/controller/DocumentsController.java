@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +37,17 @@ public class DocumentsController {
             "electronics", "gastronomy", "physics", "biology", "sport", "technology");
 
     @PostMapping("/upload")
-    public Map<String, TopicResponse> getCategoryForArticle(@RequestParam("file") MultipartFile pdf) {
-        return documentService.getTopicsForArticle(getPdfAsString(pdf));
+    public List<Map<String, Object>> getCategoryForArticle(@RequestParam("file") MultipartFile pdf) {
+        Map<String, TopicResponse> response = documentService.getTopicsForArticle(getPdfAsString(pdf));
+        List<Map<String, Object>> parsedResponse = new ArrayList<>();
+        response.forEach((key, value) -> {
+            Map<String, Object> content = new HashMap<>();
+            content.put("category", key);
+            content.put("topics", value.getWords());
+            content.put("similarity", value.getSimilarity());
+            parsedResponse.add(content);
+        });
+        return parsedResponse;
     }
 
     private String getPdfAsString(MultipartFile pdf) {
