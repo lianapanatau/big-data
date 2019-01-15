@@ -1,8 +1,13 @@
 package com.bigdata.topic.controller;
 
 import com.bigdata.topic.model.Document;
+import com.bigdata.topic.model.TopicModelResponse;
 import com.bigdata.topic.service.DocumentService;
 import com.itextpdf.text.pdf.PdfReader;
+import org.apache.commons.io.IOUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.util.PDFTextStripper;
+import org.apache.pdfbox.util.PDFTextStripperByArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,14 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 
@@ -27,7 +27,7 @@ public class DocumentsController {
     @Autowired
     private DocumentService documentService;
 
-    @GetMapping("/")
+    @GetMapping("/documents")
     public List<Document> getAllDocuments() {
         return documentService.getAllDocuments();
     }
@@ -38,10 +38,13 @@ public class DocumentsController {
     @PostMapping("/upload")
     public List<Map<String, Object>> fileReceiver(@RequestParam("file") MultipartFile file) {
         try {
-            PdfReader pdfReader = new PdfReader(file.getInputStream());
-            System.out.println(pdfReader.getNumberOfPages());
+            InputStream inputStream =  new BufferedInputStream(file.getInputStream());
+            String fileAsString = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+            TopicModelResponse topicsForArticle = documentService.getTopicsForArticle(fileAsString);
+
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("EROARE");
+            //e.printStackTrace();
         }
         Random random = new Random();
         random.setSeed(System.currentTimeMillis());
@@ -50,7 +53,7 @@ public class DocumentsController {
             Map<String, Object> match = new HashMap<>();
             double val = random.nextGaussian();
             match.put("category", t);
-            match.put("topics", Arrays.asList("ceva"," keva"));
+            match.put("topics", Arrays.asList("ceva", " keva"));
             match.put("similarity", val);
             lista.add(match);
         });
