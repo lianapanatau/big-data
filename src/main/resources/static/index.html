@@ -9,34 +9,46 @@
 <!--    <script src="js/main.js"></script>-->
     <meta charset="utf-8">
     <title>Article evaluator</title>
+    <style>
+        .btn-xl {
+            padding: 10px 20px;
+            font-size: 20px;
+            border-radius: 10px;
+        }
+    </style>
+
 </head>
-<body>
+<body background="bkgrd.png">
+
 <div class="container">
-    <div class="col-md-8 col-md-offset-2">
-        <h3>Select a file for evaluation</h3>
-        <!--target = "frameMisteux"-->
-        <form id="form" action="/upload" enctype="multipart/form-data" >
-            <!-- COMPONENT START -->
-            <div class="form-group">
-                <div class="input-group input-file" name="file">
-                    <input type="file" class="form-control" placeholder='Choose a file...' accept="application/pdf"/>
-                    <span class="input-group-btn">
-        		<!--<button class="btn btn-default btn-choose" type="button">Choose</button>-->
-    		</span>
-
-
-                </div>
-            </div>
-            <!-- COMPONENT END -->
-            <div class="form-group">
-                <button type="submit" class="btn blltn-primary pull-right">Submit</button>
-            </div>
-        </form>
-        <div class="col-md-8 col-md-offset-2" id="chart"></div>
+    <div class="col-sm-4 fixed-top">
+        <img src="logo.png" alt="No copyright intended" style="width:128px;height:128px;" align="right">
     </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Select a file for evaluation</h3>
+            <!--target = "frameMisteux"-->
+            <form id="form" action="/upload" enctype="multipart/form-data" >
+                <!-- COMPONENT START -->
+                <div class="form-group">
+                    <div class="input-group input-file" name="file">
+                        <input type="file" class="form-control" placeholder='Choose a file...' accept='application/pdf'/>
+                    </div>
+                </div>
+                <!-- COMPONENT END -->
+                <div class="form-group">
+                    <button type="submit" class="btn blltn-primary pull-right btn-xl">Submit</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+    <div class="col-md-8 col-md-offset-2" id="chart"></div>
 </div>
 <script type="text/javascript">
 
+// submit and handle response
 $('#form').submit(function (e) {
     e.preventDefault();
     $.ajax({
@@ -59,8 +71,8 @@ $('#form').submit(function (e) {
     });
 
 });
-
-	function bs_input_file() {
+// file select
+function bs_input_file() {
 	$(".input-file").before(
 		function() {
 			if ( ! $(this).prev().hasClass('input-ghost') ) {
@@ -90,6 +102,8 @@ $(function() {
 	bs_input_file();
 });
 
+// graph drow
+
 google.charts.load('current', {packages: ['corechart', 'bar']});
 google.charts.setOnLoadCallback(drawMultSeries);
 
@@ -110,8 +124,14 @@ function drawMultSeries(data = dateDefault) {
       var data = google.visualization.arrayToDataTable(data);
       if (init) {
           var options = {
+            font : '100',
             title: 'Matching for categories',
-            chartArea: {width: '70%', height: 800},
+            bar: {groupWidth: "200%"},
+            chartArea: {
+                width: '70%',
+                height: '80%',
+
+                },
             hAxis: {
               title: 'Match',
               minValue: 0
