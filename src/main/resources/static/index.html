@@ -45,6 +45,7 @@
 
     </div>
     <div class="col-md-8 col-md-offset-2" id="chart"></div>
+    <pre id = "relevatWords">Here you will see the most relevant terms in your document.</pre>
 </div>
 <script type="text/javascript">
 
@@ -62,10 +63,12 @@ $('#form').submit(function (e) {
            console.log(data);
 
                 var results = [["Category", "Similarity"]];
+                var relevantMatches = "";
                 for (var i = 0; i < data.length; i++) {
                     results.push([data[i].category, data[i].similarity]);
+                    relevantMatches += "\n" + data[i].category + ": " + data[i].topics;
                 }
-
+                document.getElementById("relevatWords").innerHTML = relevantMatches;
                 drawMultSeries(results)
         }
     });
