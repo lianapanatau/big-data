@@ -1,40 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" type="text/css" />
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<!--    <script src="js/main.js"></script>-->
-    <meta charset="utf-8">
-    <title>Article evaluator</title>
-</head>
-<body>
-<div class="container">
-    <div class="col-md-8 col-md-offset-2">
-        <h3>Select a file for evaluation</h3>
-        <!--target = "frameMisteux"-->
-        <form id="form" action="/upload" enctype="multipart/form-data" >
-            <!-- COMPONENT START -->
-            <div class="form-group">
-                <div class="input-group input-file" name="file">
-                    <input type="file" class="form-control" placeholder='Choose a file...' accept="application/pdf"/>
-                    <span class="input-group-btn">
-        		<!--<button class="btn btn-default btn-choose" type="button">Choose</button>-->
-    		</span>
-
-
-                </div>
-            </div>
-            <!-- COMPONENT END -->
-            <div class="form-group">
-                <button type="submit" class="btn blltn-primary pull-right">Submit</button>
-            </div>
-        </form>
-        <div class="col-md-8 col-md-offset-2" id="chart"></div>
-    </div>
-</div>
 <script type="text/javascript">
 
 $('#form').submit(function (e) {
@@ -48,7 +11,10 @@ $('#form').submit(function (e) {
         type: 'POST',
         success: function (data) {
            console.log(data);
-
+               iframe = document.getElementById('frameMisteux');
+                console.log(iframe);
+                iframe.contentWindow.document.open()
+                iframe.contentWindow.document.write(data);
                 var results = [["Category", "Similarity"]];
                 for (var i = 0; i < data.length; i++) {
                     results.push([data[i].category, data[i].similarity]);
@@ -131,6 +97,3 @@ function drawMultSeries(data = dateDefault) {
     }
 
 </script>
-</body>
-
-</html>
