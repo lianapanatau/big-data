@@ -1,15 +1,18 @@
 package com.bigdata.topic.model;
 
-import java.util.List;
+import java.util.Map;
 
 public class TopicModelResponse {
-    private List<TopicResponse> topicResponse;
+    private Map<String, TopicResponse> topicResponse;
 
-    public List<TopicResponse> getTopicResponse() {
+    public TopicModelResponse() {
+    }
+
+    public Map<String, TopicResponse> getTopicResponse() {
         return topicResponse;
     }
 
-    public void setTopicResponse(List<TopicResponse> topicResponse) {
+    public void setTopicResponse(Map<String, TopicResponse> topicResponse) {
         this.topicResponse = topicResponse;
     }
 

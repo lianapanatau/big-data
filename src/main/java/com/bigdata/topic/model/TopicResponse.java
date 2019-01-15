@@ -3,19 +3,18 @@ package com.bigdata.topic.model;
 import java.util.List;
 
 public class TopicResponse {
-    private List<String> topics;
+    private List<String> words;
     private float similarity;
-    private String cateogory;
 
     public TopicResponse() {
     }
 
-    public List<String> getTopics() {
-        return topics;
+    public List<String> getWords() {
+        return words;
     }
 
-    public void setTopics(List<String> topics) {
-        this.topics = topics;
+    public void setWords(List<String> words) {
+        this.words = words;
     }
 
     public float getSimilarity() {
@@ -26,20 +25,11 @@ public class TopicResponse {
         this.similarity = similarity;
     }
 
-    public String getCateogory() {
-        return cateogory;
-    }
-
-    public void setCateogory(String cateogory) {
-        this.cateogory = cateogory;
-    }
-
     @Override
     public String toString() {
         return "TopicResponse{" +
-                "topics=" + topics +
+                "words=" + words +
                 ", similarity=" + similarity +
-                ", cateogory='" + cateogory + '\'' +
                 '}';
     }
 }

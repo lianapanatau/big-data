@@ -1,7 +1,8 @@
 package com.bigdata.topic.client;
 
 import com.bigdata.topic.http.RequestBuilder;
-import com.bigdata.topic.model.TopicModelResponse;
+import com.bigdata.topic.model.TopicResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.Map;
 
 @Component
 public class TopicModelClientApi {
@@ -27,8 +30,7 @@ public class TopicModelClientApi {
         objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
     }
 
-    public TopicModelResponse getTopics(String file) {
-
+    public Map<String, TopicResponse> getTopics(String file) {
         ResponseEntity<String> responseEntity = RequestBuilder
                 .prepareCall("http://localhost:8081/topic")
                 .withPostMethod()
@@ -37,14 +39,11 @@ public class TopicModelClientApi {
                 .acceptJson()
                 .makeCall(restTemplate, String.class);
 
-        TopicModelResponse response = null;
-//        try {
-        String responseAsString = responseEntity.getBody();
-        System.out.println("Response " + responseAsString);
-        //response = objectMapper.readValue(responseAsString, TopicModelResponse.class);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        return response;
+        try {
+            return objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, TopicResponse>>() {});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

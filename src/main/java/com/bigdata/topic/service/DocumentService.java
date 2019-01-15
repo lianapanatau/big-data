@@ -2,12 +2,13 @@ package com.bigdata.topic.service;
 
 import com.bigdata.topic.client.TopicModelClientApi;
 import com.bigdata.topic.model.Document;
-import com.bigdata.topic.model.TopicModelResponse;
+import com.bigdata.topic.model.TopicResponse;
 import com.bigdata.topic.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DocumentService {
@@ -27,7 +28,7 @@ public class DocumentService {
         documents.forEach(documentRepository::save);
     }
 
-    public TopicModelResponse getTopicsForArticle(String file) {
+    public Map<String, TopicResponse> getTopicsForArticle(String file) {
         return topicModelClientApi.getTopics(file);
     }
 }
